@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD API INTERFACE</title>
+    <link rel="stylesheet" href="./CSS/styles.css">
 </head>
 <body>
     <h1>CRUD API INTERFACE</h1>
@@ -11,10 +12,12 @@
     <!-- Read Section -->
     <h2>Read Items</h2>
     <!--button id="loadItemsButton">Load Items</button-->
-
     <div id="readItems"></div>
 
+<!-- Flex Grid for Create, Update, and Delete Sections -->
+<div class="flex-container">
     <!-- Create Section -->
+    <div class="flex-item">
     <h2>Create Items</h2>
         <form id="createForm">
             <input type="text" id="createName" placeholder="Name" required>
@@ -22,23 +25,30 @@
             <button type="submit">Create</button>
         </form>
     <div id="createMessage" class="message"></div>
+    </div>
+
     <!-- Update Section -->
+    <div class="flex-item">
     <h2>Update Item</h2>
-                <form id="updateForm">
-                    <input type="number" id="updateId" placeholder="Item ID" required>
-                    <input type="text" id="updateName" placeholder="New Name" required>
-                    <input type="text" id="updateDescription" placeholder="New Description" required>
-                    <button type="submit">Update</button>
-                </form>
-                <div id="updateMessage" class="message"></div>
+        <form id="updateForm">
+            <input type="number" id="updateId" placeholder="Item ID" required>
+            <input type="text" id="updateName" placeholder="New Name" required>
+            <input type="text" id="updateDescription" placeholder="New Description" required>
+            <button type="submit">Update</button>
+        </form>
+    <div id="updateMessage" class="message"></div>
+    </div>
+
     <!-- Delete Section -->
+    <div class="flex-item">
     <h2>Delete Item</h2>
-                <form id="deleteForm">
-                    <input type="number" id="deleteId" placeholder="Item ID to Delete" required>
-                    <button type="submit">Delete</button>
-                </form>
-                <div id="deleteMessage" class="message"></div>
-            </div>
+        <form id="deleteForm">
+            <input type="number" id="deleteId" placeholder="Item ID to Delete" required>
+            <button type="submit">Delete</button>
+        </form>
+    <div id="deleteMessage" class="message"></div>
+    </div>
+</div>
 
     <script>
         // Create Item
