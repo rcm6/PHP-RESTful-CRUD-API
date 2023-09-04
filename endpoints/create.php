@@ -5,14 +5,12 @@ ini_set('display_errors', 'On');
 
 // Include database config
 include_once './includes/config.php';
-/*
 
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-*/
 
 // Check if data was sent via POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
