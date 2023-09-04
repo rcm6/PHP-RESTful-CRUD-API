@@ -23,9 +23,22 @@
         </form>
     <div id="createMessage" class="message"></div>
     <!-- Update Section -->
-    <h2>Update Items</h2>
+    <h2>Update Item</h2>
+                <form id="updateForm">
+                    <input type="number" id="updateId" placeholder="Item ID" required>
+                    <input type="text" id="updateName" placeholder="New Name" required>
+                    <input type="text" id="updateDescription" placeholder="New Description" required>
+                    <button type="submit">Update</button>
+                </form>
+                <div id="updateMessage" class="message"></div>
     <!-- Delete Section -->
-    <h2>Delete Items</h2>
+    <h2>Delete Item</h2>
+                <form id="deleteForm">
+                    <input type="number" id="deleteId" placeholder="Item ID to Delete" required>
+                    <button type="submit">Delete</button>
+                </form>
+                <div id="deleteMessage" class="message"></div>
+            </div>
 
     <script>
         // Create Item
@@ -118,6 +131,113 @@
                 document.getElementById('readItems').textContent = 'An error occurred.';
             });
         }
+
+           // Update Item
+document.getElementById('updateForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const id = document.getElementById('updateId').value;
+    const name = document.getElementById('updateName').value;
+    const description = document.getElementById('updateDescription').value;
+
+    // Check if ID exists before sending the update request
+    if (id) {
+        // Check if the ID exists in the database before updating
+        fetch(`/PHP-Restful-CRUD-API/check-id-exists?id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                // The ID exists, proceed with the update
+                fetch(`/PHP-Restful-CRUD-API/update`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id, name, description }), // Include id in the request body
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('updateMessage').textContent = data.message;
+                        document.getElementById('updateMessage').classList.add('success');
+
+                        // Clear the form
+                        document.getElementById('updateId').value = '';
+                        document.getElementById('updateName').value = '';
+                        document.getElementById('updateDescription').value = '';
+                        // Reload items
+                        loadItems();
+                    } else {
+                        document.getElementById('updateMessage').textContent = 'An error occurred during the update.';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('updateMessage').textContent = 'An error occurred during the update.';
+                });
+            } else {
+                // The ID does not exist, show an error message
+                document.getElementById('updateMessage').textContent = 'Item with this ID does not exist.';
+                document.getElementById('updateMessage').classList.add('error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('updateMessage').textContent = 'An error occurred while checking the ID.';
+        });
+    } else {
+        document.getElementById('updateMessage').textContent = 'Please enter a valid ID.';
+    }
+});
+
+
+
+// Delete Item
+document.getElementById('deleteForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const idToDelete = document.getElementById('deleteId').value;
+
+    // Check if the ID exists in the database before deleting
+    fetch(`/PHP-Restful-CRUD-API/check-id-exists?id=${idToDelete}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.exists) {
+            // The ID exists, proceed with the delete
+            // Create a FormData object to send the data as a POST request
+            const formData = new FormData();
+            formData.append('id', idToDelete);
+
+            fetch('/PHP-Restful-CRUD-API/delete', {
+                method: 'POST',
+                body: formData, // Send the data as a FormData object
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('deleteMessage').textContent = data.message;
+                    document.getElementById('deleteMessage').classList.add('success');
+                    // Clear the form
+                    document.getElementById('deleteId').value = '';
+                    // Reload items
+                    loadItems();
+                } else {
+                    document.getElementById('deleteMessage').textContent = 'An error occurred during the delete.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('deleteMessage').textContent = 'An error occurred during the delete.';
+            });
+        } else {
+            // The ID does not exist, show an error message
+            document.getElementById('deleteMessage').textContent = 'Item with this ID does not exist.'
+            document.getElementById('deleteMessage').classList.add('error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('deleteMessage').textContent = 'An error occurred while checking the ID.';
+    });
+});
 
         /*
         // Load items when the "Load Items" button is clicked
