@@ -17,6 +17,8 @@ if ($request_uri === '/PHP-Restful-CRUD-API/create') {
     include_once 'endpoints/create.php';
 } elseif ($request_uri === '/PHP-Restful-CRUD-API/read') {
     include_once 'endpoints/read.php';
+} elseif ($request_uri === '/PHP-Restful-CRUD-API/') {
+    include_once 'interface.php';
 } elseif (strpos($request_uri, '/PHP-Restful-CRUD-API/update') === 0) {
     if ($request_method === 'POST') {
         // Handle POST requests for update endpoint
