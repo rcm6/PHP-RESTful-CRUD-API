@@ -1,0 +1,13 @@
+# Enable the Apache rewrite engine
+RewriteEngine On
+
+# Check if the requested URL does not correspond to an existing file (-f)
+# and does not correspond to an existing directory (-d)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# If both conditions above are met, then apply the following rewrite rule:
+# - Match any URL path (.*)
+# - Rewrite it to 'index.php' and append the original query string (QSA)
+# - The [L] flag indicates that this is the last rule to process
+RewriteRule ^(.*)$ index.php [QSA,L]
